@@ -1,0 +1,37 @@
+{
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "description": "implement simple CRUD API using in-memory database underneath.",
+  "main": "dist/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/app.ts && tsc ./src/app.ts && node ./dist/app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alitalia60/RSSchool-node.js-2022Q4.git"
+  },
+  "keywords": [
+    "node",
+    "CRUD",
+    "RSSchool"
+  ],
+  "author": "Andrew Litvinov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alitalia60/RSSchool-node.js-2022Q4/issues"
+  },
+  "homepage": "https://github.com/Alitalia60/RSSchool-node.js-2022Q4#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/node18": "^1.0.1",
+    "@types/node": "^18.11.15",
+    "@types/uuid": "^9.0.0"
+  }
+}
