@@ -1,10 +1,10 @@
-import http, { IncomingMessage, Server, ServerResponse } from 'http';
+import http, { Server } from 'http';
 import * as dotenv from 'dotenv';
 import { mapRouter } from './api/routes/router';
 
 dotenv.config()
 
-const PORT: number = Number(process.env.PORT) || 3001;
+const PORT: number = Number(process.env.PORT) || 4000;
 
 const server: Server = http.createServer(mapRouter);
 

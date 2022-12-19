@@ -1,5 +1,4 @@
 import { IncomingMessage } from 'http';
-// import { typeUser } from 'api/DataBase/users';
 
 export async function getBodyData(request: IncomingMessage): Promise<string> {
   return new Promise<string>((resolve, reject) => {
