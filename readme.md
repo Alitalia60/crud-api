@@ -6,6 +6,6 @@ Usage:
 
 `npm install`
 
-`npm run dev`
-`npm run prod`
-`npm run multi`
+`npm run start:dev`
+`npm run start:prod`
+`npm run start:multi`

@@ -1,9 +1,9 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { codesStatus } from '../helpers/codeStatuses';
-
-import { createUser, getUsers, getUser, deleteUser, updateUser } from '../controllers/userController';
 import { validate } from 'uuid';
+
+import { codesStatus } from '../helpers/codeStatuses';
 import { sendResponse } from '../helpers/sendResponse';
+import { createUser, getUsers, getUser, deleteUser, updateUser } from '../controllers/userController';
 
 export const router = (req: IncomingMessage, res: ServerResponse) => {
 
@@ -43,7 +43,6 @@ export const router = (req: IncomingMessage, res: ServerResponse) => {
 
       default:
         sendResponse(res, codesStatus.NotAllowed, 'Method not allowed')
-
         break;
     }
   }

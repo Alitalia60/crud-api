@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon ./src/app.ts && tsc ./src/app.ts",
-    "start:prod": "nodemon ./src/app.ts && tsc ./src/app.ts",
-    "start:multi": "nodemon ./src/app.ts && tsc \"./src/app.ts -- --multi\""
+    "start:prod": "tsc && node ./dist/app.js",
+    "start:multi": "tsc && node ./dist/app.js --multi"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,8 @@
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
     "@tsconfig/node18": "^1.0.1",
-    "@types/node": "^18.11.15",
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.0"
   }
 }
