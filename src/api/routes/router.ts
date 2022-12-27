@@ -5,7 +5,7 @@ import { createUser, getUsers, getUser, deleteUser, updateUser } from '../contro
 import { validate } from 'uuid';
 import { sendResponse } from '../helpers/sendResponse';
 
-export const mapRouter = (req: IncomingMessage, res: ServerResponse) => {
+export const router = (req: IncomingMessage, res: ServerResponse) => {
 
   if (req.url === '/api/users/') {
     switch (req.method) {

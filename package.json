@@ -5,7 +5,9 @@
   "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/app.ts && tsc ./src/app.ts && node ./dist/app"
+    "start:dev": "nodemon ./src/app.ts && tsc ./src/app.ts",
+    "start:prod": "nodemon ./src/app.ts && tsc ./src/app.ts",
+    "start:multi": "nodemon ./src/app.ts && tsc \"./src/app.ts -- --multi\""
   },
   "repository": {
     "type": "git",
