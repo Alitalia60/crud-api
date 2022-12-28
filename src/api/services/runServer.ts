@@ -1,7 +1,7 @@
 import { Worker } from 'cluster';
 import { createServer, Server } from 'http';
 
-import { router } from './api/routes/router';
+import { router } from '../routes/router';
 import { loadBalancer } from './loadBalancer';
 
 
@@ -15,7 +15,7 @@ export function runServer(port: number, multiMode: boolean = false, worker: Work
     server.listen(port, () => {
       console.log(`worker ${worker.id} start at ${port} pid: ${process.pid}`);
     });
-    
+
   }
   else {
     const server: Server = createServer(multiMode ? loadBalancer : router);

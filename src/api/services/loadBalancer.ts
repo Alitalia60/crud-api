@@ -1,10 +1,10 @@
-import { getBodyData } from './api/services/getBodyData';
+import { getBodyData } from './getBodyData';
 import { IncomingMessage, ServerResponse } from 'node:http'
-import { sendResponse } from './api/helpers/sendResponse';
+import { sendResponse } from '../helpers/sendResponse';
 // import nodeCluster from 'node:cluster';
-import { nextWorker } from './api/services/activeWorkers';
+import { nextWorker } from './activeWorkers';
 import http from 'node:http';
-import { codesStatus } from './api/helpers/codeStatuses';
+import { codesStatus } from '../helpers/codeStatuses';
 
 let nextPort: number = 0;
 
