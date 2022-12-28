@@ -26,10 +26,22 @@ else {
       console.log(`worker id: ${worker.id} dead`);
       replaceDeadWorker(worker);
     });
+    cluster.on('message', (worker, msg) => {
+      console.log('message from worker ', worker.id);
+    });
+
+    workersArray.forEach(element => {
+      element.child.send({ mes: ' mess to child ' })
+    });
+
 
     runServer(PORT, true);
   }
   else {
+    cluster.worker?.on('message', () => {
+      console.log('get message by worker', cluster.worker?.id);
+
+    })
     runServer(PORT, true, cluster.worker);
   }
 }

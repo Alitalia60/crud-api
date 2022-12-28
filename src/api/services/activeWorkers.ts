@@ -23,11 +23,11 @@ export const replaceDeadWorker = (worker: Worker) => {
   }
 }
 
-export function nextWorkerPort(): number | undefined {
+export function nextWorker(): WorkerSetType | undefined {
   const firstWorker = workersArray.shift();
   if (firstWorker) {
     workersArray.push(firstWorker)
-    return firstWorker.workerPort
+    return firstWorker
   }
   else return
 }

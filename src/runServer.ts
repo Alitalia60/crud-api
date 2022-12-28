@@ -15,6 +15,7 @@ export function runServer(port: number, multiMode: boolean = false, worker: Work
     server.listen(port, () => {
       console.log(`worker ${worker.id} start at ${port} pid: ${process.pid}`);
     });
+    
   }
   else {
     const server: Server = createServer(multiMode ? loadBalancer : router);

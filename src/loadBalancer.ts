@@ -2,7 +2,7 @@ import { getBodyData } from './api/services/getBodyData';
 import { IncomingMessage, ServerResponse } from 'node:http'
 import { sendResponse } from './api/helpers/sendResponse';
 // import nodeCluster from 'node:cluster';
-import { nextWorkerPort } from './api/services/activeWorkers';
+import { nextWorker } from './api/services/activeWorkers';
 import http from 'node:http';
 import { codesStatus } from './api/helpers/codeStatuses';
 
@@ -12,7 +12,9 @@ export async function loadBalancer(request: IncomingMessage, response: ServerRes
 
   const { method, url, } = request;
 
-  const nextPort = nextWorkerPort();
+  const nextQueue = nextWorker();
+  const nextPort = nextQueue?.workerPort;
+  nextQueue?.child.send({ mes: 'nextQueueWorker from LB' })
 
   let reqBody: string = '';
   if (method) {
