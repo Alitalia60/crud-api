@@ -1,37 +1,50 @@
 import { getBodyData } from './api/services/getBodyData';
 import { IncomingMessage, ServerResponse } from 'node:http'
 import { sendResponse } from './api/helpers/sendResponse';
-let nextWorkerId = 0;
+// import nodeCluster from 'node:cluster';
+import { nextWorkerPort } from './api/services/activeWorkers';
+import http from 'node:http';
+import { codesStatus } from './api/helpers/codeStatuses';
+
+let nextPort: number = 0;
 
 export async function loadBalancer(request: IncomingMessage, response: ServerResponse) {
+
   const { method, url, } = request;
-  // nextWorkerId = let nextWorkerId >;
 
-  // console.log(request.headers);
+  const nextPort = nextWorkerPort();
 
-  // let nextPort = port + nextWorkerId;
   let reqBody: string = '';
-  // let config = {
-  //   method: method,
-  //   path: url,
-  //   port: nextPort,
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Content-Length': Buffer.byteLength(JSON.stringify(bodyData)),
-  //   },
-  // };
+  if (method) {
+    if (['PUT', 'POST'].includes(method)) {
+      reqBody = await getBodyData(request);
+    }
+  };
 
-  // if (method) {
-  //   if (['PUT', 'POST'].includes(method)) {
-  //     reqBody = await getBodyData(request);
-  //   }
-  //   if (reqBody) {
-  //     config = { method: method, body: JSON.stringify(reqBody) };
-  //   }
-  // };
+  let config = {
+    // host: request.headers.host,
+    method: method,
+    path: url,
+    port: nextPort,
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(reqBody),
+    },
+  };
 
+  const requestLB = http.request(config, async (workerResponse: IncomingMessage) => {
+    if (config.method) {
 
+      let resBody: string = await getBodyData(workerResponse);
 
-  // const workerUrl = `${host}:${port + 1}${url}`;
-  sendResponse(response, 200, 'LB response')
+      try {
+        sendResponse(response, workerResponse.statusCode ? workerResponse.statusCode : codesStatus.ServerError, JSON.parse(resBody))
+      } catch (error) {
+        sendResponse(response, workerResponse.statusCode ? workerResponse.statusCode : codesStatus.ServerError, error ? error : 'Unknon error');
+      }
+    } else {
+      sendResponse(response, codesStatus.ServerError, 'Method not valid');
+    }
+  });
+  requestLB.end(reqBody)
 }

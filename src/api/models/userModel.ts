@@ -78,6 +78,7 @@ export class User {
   }
 
   static async updateUser(bodyData: string, id: string): Promise<typeUser> {
+
     return await new Promise((resolve, reject) => {
       const user: typeUser | undefined = users.find(item => item.id === id);
       if (user) {
@@ -90,7 +91,6 @@ export class User {
 
   static async deleteUser(id: string): Promise<void> {
     await new Promise((resolve, reject) => {
-      // const user = users.find(item => item.id === id);
       users = users.filter(item => item.id !== id);
       resolve({})
     })

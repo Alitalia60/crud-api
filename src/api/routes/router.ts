@@ -4,8 +4,11 @@ import { validate } from 'uuid';
 import { codesStatus } from '../helpers/codeStatuses';
 import { sendResponse } from '../helpers/sendResponse';
 import { createUser, getUsers, getUser, deleteUser, updateUser } from '../controllers/userController';
+import { getBodyData } from '../services/getBodyData';
 
-export const router = (req: IncomingMessage, res: ServerResponse) => {
+export const router = async (req: IncomingMessage, res: ServerResponse) => {
+
+  console.log(`worker: incoming request ${req.headers.host}:${req.url}`);
 
   if (req.url === '/api/users/') {
     switch (req.method) {
