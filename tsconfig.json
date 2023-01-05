@@ -1,6 +1,6 @@
 {
   "extends": "./node16.json",
-  "exclude": ["node_modules", "./src/api/tests"],
+  "exclude": ["node_modules", "./src/api/tests", "__*.*"],
   "include": ["./src"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */

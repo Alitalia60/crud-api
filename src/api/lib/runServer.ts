@@ -2,25 +2,24 @@ import { Worker } from 'cluster';
 import { createServer, Server } from 'http';
 
 import { router } from '../routes/router';
-import { loadBalancer } from './loadBalancer';
+import { balancer } from '../routes/balancer';
 
 
 export function runServer(port: number, multiMode: boolean = false, worker: Worker | undefined = undefined): void {
 
-  // if (worker && multiMode) {
   if (worker) {
-    //it is a worker
     port = Number(process.env['workerPort'])
     const server: Server = createServer(router);
     server.listen(port, () => {
-      console.log(`worker ${worker.id} start at ${port} pid: ${process.pid}`);
+      console.log(`worker ${worker.id} start at ${port} pid: `, process.pid);
     });
+
 
   }
   else {
-    const server: Server = createServer(multiMode ? loadBalancer : router);
+    const server: Server = createServer(multiMode ? balancer : router);
     server.listen(port, () => {
-      console.log(`Server ${multiMode ? '(LB) ' : ''}start at ${port}`);
+      console.log(`Server ${multiMode ? '(balancer) ' : ''}start at ${port} pid: `, process.pid);
     });
 
   }

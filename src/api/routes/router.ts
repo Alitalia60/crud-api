@@ -1,55 +1,53 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { validate } from 'uuid';
+import cluster from 'node:cluster';
 
 import { codesStatus } from '../helpers/codeStatuses';
 import { sendResponse } from '../helpers/sendResponse';
-import { createUser, getUsers, getUser, deleteUser, updateUser } from '../controllers/userController';
-import { getBodyData } from '../services/getBodyData';
+import { getBodyData } from '../lib/getBodyData';
+
 
 export const router = async (req: IncomingMessage, res: ServerResponse) => {
+  let id: string = '';
+  let reqBodyJSON: string = '';
+  if (req.method && ['GET', 'POST', 'PUT', 'DELETE'].includes(req.method)) {
+    if (['POST', 'PUT'].includes(req.method)) {
+      reqBodyJSON = await getBodyData(req);
 
-  console.log(`worker: incoming request ${req.headers.host}:${req.url}`);
-
-  if (req.url === '/api/users/') {
-    switch (req.method) {
-      case 'GET':
-        getUsers(req, res);
-        break;
-
-      case 'POST':
-        createUser(req, res);
-        break;
-
-      default:
-        sendResponse(res, codesStatus.NotAllowed, 'Method not allowed')
-        break;
     }
-  } else if (req.url?.match(/\/api\/users\/(.+)/gm)) {
-    const id: string = req.url.split('/')[3];
-    if (!validate(id)) {
-      sendResponse(res, codesStatus.NotFound, `id not valid`)
-      return
+    if (req.url?.match(/\/api\/users\/?/gm)) {
+      if (req.url?.match(/\/api\/users\/(.+)/gm)) {
+        id = req.url.split('/')[3];
+        if (!validate(id)) {
+          sendResponse(res, codesStatus.BadRequest, `id not valid`)
+          return
+        }
+        if (id && req.method === 'POST') {
+          sendResponse(res, codesStatus.NotAllowed, 'Method not allowed')
+          return
+        }
+      }
+    } else {
+      sendResponse(res, codesStatus.NotFound, 'Route not exist')
     }
-    switch (req.method) {
+  } else {
+    sendResponse(res, codesStatus.NotAllowed, 'Method not allowed')
+  };
 
-      case 'GET':
-        getUser(req, res, id);
-        break;
-
-      case 'PUT':
-        updateUser(req, res, id);
-        break;
-
-      case 'DELETE':
-        deleteUser(req, res, id);
-        break;
-
-      default:
-        sendResponse(res, codesStatus.NotAllowed, 'Method not allowed')
-        break;
-    }
+  if (process.send) {
+    //отправка worker.id сообщения мастеру
+    process.send({ workerId: cluster.worker?.id, cmd: req.method, userId: id, body: reqBodyJSON })
+  } else {
+    // Single-mode: Primary посылает запрос к БД
   }
-  else {
-    sendResponse(res, codesStatus.NotFound, 'Route not exist')
-  }
+
+  type TAnswer = { code: number, data: Object | undefined, err: string }
+  process.on('message', (mes: TAnswer) => {
+    if (mes.data) {
+      sendResponse(res, mes.code, mes.data)
+    } else {
+      sendResponse(res, mes.code, mes.err)
+    }
+
+  })
 }
