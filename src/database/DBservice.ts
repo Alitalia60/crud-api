@@ -3,6 +3,8 @@ import { codesStatus } from '../api/helpers/codeStatuses';
 import { v4 as uuidv4 } from 'uuid';
 import { TUser, TMessage, TResult, TError } from '../api/types/types';
 
+
+
 // let users: User[] = [
 let users: TUser[] = [
   {
@@ -52,7 +54,7 @@ class DBService {
             resolve([codesStatus.OK, foundUser]);
           }
           else {
-            reject([codesStatus.NotFound, 'Not found']);
+            reject([codesStatus.NotFound, 'User id not found']);
           }
         } else {
           resolve([codesStatus.OK, users]);
@@ -85,7 +87,7 @@ class DBService {
           resolve([codesStatus.NoContent, undefined]);
         }
         else {
-          reject([codesStatus.NotFound, 'Not found']);
+          reject([codesStatus.NotFound, 'User id not found']);
         }
       } catch (error) {
         reject([codesStatus.ServerError, error]);
@@ -101,7 +103,7 @@ class DBService {
           (user) => user.id === id
         );
         if (!findUser) {
-          reject([codesStatus.NotFound, 'Not found']);
+          reject([codesStatus.NotFound, 'User id not found']);
         } else {
           const index: number = users.indexOf(findUser);
           Object.assign(users[index], JSON.parse(data));
@@ -144,8 +146,15 @@ process.on('message', (mes: TMessage) => {
     case 'DELETE':
       DBService.delete(mes.userId)
         // DBService.get(mes.userId)
-        .then(result => { sendResult(mes.workerId, result) })
-        .catch(error => { sendError(mes.workerId, error) });
+        .then(result => {
+          // console.log('case DELETE result: ', result);
+          sendResult(mes.workerId, result)
+        })
+        .catch(error => {
+
+          // console.log('case DELETE error: ', error);
+          sendError(mes.workerId, error)
+        });
       break;
 
     default:
@@ -157,7 +166,10 @@ function sendResult(workerId: string, result: TResult): void {
   if (process.send) {
     const [code, data] = result;
     process.send(Object.assign({ workerId: workerId }, { code: code, data: data }));
+  } else {
+    console.log('1. DBService WHAT TO DO?');
   }
+
 }
 
 // function sendError(workerId: string, error: TError): void {
