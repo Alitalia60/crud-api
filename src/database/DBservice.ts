@@ -5,27 +5,27 @@ import { TUser, TMessage, TResult, TError } from '../api/types/types';
 
 
 
-// let users: User[] = [
-let users: TUser[] = [
-  {
-    id: '9db530b3-726c-487f-be5d-c80bef62bd58',
-    username: 'Andrew',
-    age: 26,
-    hobbies: ['fishing', 'hunting'],
-  },
-  {
-    id: '3db54dec-51fc-4725-acbf-f6808aa93231',
-    username: 'Jury',
-    age: 62,
-    hobbies: ['no'],
-  },
-  {
-    id: 'a688a856-7e62-4aa4-ab75-f7e07733b793',
-    username: 'Mary',
-    age: 28,
-    hobbies: ['Dance', 'Sings'],
-  },
-];
+let users: TUser[] = [];
+// let users: TUser[] = [
+//   {
+//     id: '9db530b3-726c-487f-be5d-c80bef62bd58',
+//     username: 'Andrew',
+//     age: 26,
+//     hobbies: ['fishing', 'hunting'],
+//   },
+//   {
+//     id: '3db54dec-51fc-4725-acbf-f6808aa93231',
+//     username: 'Jury',
+//     age: 62,
+//     hobbies: ['no'],
+//   },
+//   {
+//     id: 'a688a856-7e62-4aa4-ab75-f7e07733b793',
+//     username: 'Mary',
+//     age: 28,
+//     hobbies: ['Dance', 'Sings'],
+//   },
+// ];
 
 class User implements TUser {
   id?: string;

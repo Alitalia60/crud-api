@@ -20,6 +20,20 @@ export function validateUserData(usersData: string): string[] {
       incorrectKeys.push(key)
     }
   });
+
+  if (!Array.isArray(userDataAsObject.hobbies)) {
+    incorrectKeys.push('"hobby" must be an array')
+
+  } else {
+    if (userDataAsObject.hobby.length > 0) {
+      userDataAsObject.hobby.forEach((item: string) => {
+        if (typeof item !== 'string') {
+          incorrectKeys.push('Array "hobby" must contain items of string')
+        }
+      });
+    }
+  }
+
   if (incorrectKeys.length > 0) {
     return incorrectKeys;
   }
@@ -32,4 +46,6 @@ export function validateUserData(usersData: string): string[] {
     }
   });
   return missingKey;
+
+
 }
