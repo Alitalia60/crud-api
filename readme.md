@@ -2,16 +2,48 @@ Contact me, if you want, by discord: https://discordapp.com/users/@Alitalia22#52
 
 # CRUD-API
 
-Usage:
+## Usage:
 
-`npm install`
+---
 
-`npm run start:dev`
-`npm run start:prod`
-`npm run start:multi`
+### 1. In terminal run
 
-Testing:
-at first run in terminal:
-`npm run test:dev`
-and then run test in second terminal:
-`npx jest`
+    `npm install`
+
+### 2. Create file `.env` such as `.example.env`, or rename `.example.env` to `.env`
+
+### 3. Launch the application in one of the ways
+
+### At development mode:
+
+if you want to run application as sinle server, in `.env` set key
+
+`MULTI_MODE=false`.
+
+Otherwise, if application runs as cluster
+
+`MULTI_MODE=true`
+
+and start
+
+    `npm run start:dev`
+
+### In production mode
+
+if single server mode
+
+    `npm run start:prod`
+
+cluster server mode
+
+    `npm run start:multi`
+
+### 5. Testing:
+
+While testing, firstly, run in terminal:
+
+    `npm run test:dev`
+
+and then, in _**other**_ terminal, run test:
+
+    `npx jest`
