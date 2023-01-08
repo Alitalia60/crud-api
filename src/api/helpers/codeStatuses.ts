@@ -7,4 +7,4 @@ export const codesStatus = {
   NotFound: 404,// 'Not found' ,
   NotAllowed: 405,// 'Method Not Allowed' }
   ServerError: 500,// 'Internal Server Error' }
-}
+};

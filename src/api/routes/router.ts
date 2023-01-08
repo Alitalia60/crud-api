@@ -11,8 +11,8 @@ import { validateUserData } from '../validations/validateUserData';
 
 
 export const router = async (req: IncomingMessage, res: ServerResponse) => {
-  let id: string = '';
-  let reqBodyJSON: string = '';
+  let id = '';
+  let reqBodyJSON = '';
   if (req.method) {
     if (!['GET', 'POST', 'PUT', 'DELETE'].includes(req.method)) {
       sendResponse(res, codesStatus.NotAllowed, 'Method not allowed');
@@ -23,8 +23,8 @@ export const router = async (req: IncomingMessage, res: ServerResponse) => {
       id = req.url.split('/')[3];
       if (['PUT', 'DELETE', 'GET'].includes(req.method) && id) {
         if (!validate(id)) {
-          sendResponse(res, codesStatus.BadRequest, `User id is invalid (not uuid)`)
-          return
+          sendResponse(res, codesStatus.BadRequest, 'User id is invalid (not uuid)');
+          return;
         }
       }
     }
@@ -38,43 +38,40 @@ export const router = async (req: IncomingMessage, res: ServerResponse) => {
     }
     if (req.method === 'POST' && id) {
       sendResponse(res, codesStatus.BadRequest, 'Bad request. No id required');
-      return
+      return;
     }
   } else {
     sendResponse(res, codesStatus.NotAllowed, 'Method not allowed');
-    return
+    return;
   }
 
   if (process.send) {
     //отправка worker.id сообщения мастеру
-    process.send({ workerId: cluster.worker?.id, cmd: req.method, userId: id, body: reqBodyJSON })
+    process.send({ workerId: cluster.worker?.id, cmd: req.method, userId: id, body: reqBodyJSON });
 
   } else {
     // if router is Primary process (single-mode) & DB - is child
-
     DB?.once('message', (mes: TAnswer) => {
-      const { workerId, code, data, errMessage } = mes;
       if (mes.data) {
-        sendResponse(res, mes.code, mes.data)
+        sendResponse(res, mes.code, mes.data);
       } else if (mes.errMessage) {
-        sendResponse(res, mes.code, mes.errMessage)
+        sendResponse(res, mes.code, mes.errMessage);
       } else {
-        sendResponse(res, mes.code, '')
+        sendResponse(res, mes.code, '');
       }
-    })
-    DB?.send({ workerId: '', cmd: req.method, userId: id, body: reqBodyJSON })
-    // }
+    });
+    DB?.send({ workerId: '', cmd: req.method, userId: id, body: reqBodyJSON });
   }
 
   // if router is worker
   process.removeAllListeners('message');
   process.once('message', (mes: TAnswer) => {
     if (mes.data) {
-      sendResponse(res, mes.code, mes.data)
+      sendResponse(res, mes.code, mes.data);
     } else if (mes.errMessage) {
-      sendResponse(res, mes.code, mes.errMessage)
+      sendResponse(res, mes.code, mes.errMessage);
     } else {
-      sendResponse(res, mes.code, '')
+      sendResponse(res, mes.code, '');
     }
-  })
-}
+  });
+};

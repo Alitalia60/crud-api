@@ -6,7 +6,7 @@ const correctUser: TUser = {
   age: 0,
   hobbies: []
 
-}
+};
 
 export function validateUserData(usersData: string): string[] {
 
@@ -17,18 +17,19 @@ export function validateUserData(usersData: string): string[] {
   // validate if there are incorrect key(s)
   Object.keys(userDataAsObject).forEach(key => {
     if (!(key in correctUser)) {
-      incorrectKeys.push(key)
+      incorrectKeys.push(key);
     }
   });
 
+  // validate if "hobbies" are arrayof string
   if (!Array.isArray(userDataAsObject.hobbies)) {
-    incorrectKeys.push('"hobby" must be an array')
+    incorrectKeys.push('"hobby" must be an array');
 
   } else {
     if (userDataAsObject.hobbies.length > 0) {
       userDataAsObject.hobbies.forEach((item: string) => {
         if (typeof item !== 'string') {
-          incorrectKeys.push('Array "hobby" must contain items of string')
+          incorrectKeys.push('Array "hobby" must contain items of string');
         }
       });
     }
@@ -41,7 +42,7 @@ export function validateUserData(usersData: string): string[] {
   Object.keys(correctUser).forEach(key => {
     if (key !== 'id') {
       if (!(key in userDataAsObject)) {
-        missingKey.push(key)
+        missingKey.push(key);
       }
     }
   });

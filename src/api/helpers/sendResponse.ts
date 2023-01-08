@@ -1,6 +1,6 @@
 import { ServerResponse } from 'http';
 
-export const sendResponse = (response: ServerResponse, code: number, mes: Object | string) => {
+export const sendResponse = (response: ServerResponse, code: number, mes: string) => {
   response.writeHead(code, { 'Content-Type': 'application/JSON' });
   if (code >= 400) {
     if (typeof mes === 'string') {
@@ -20,5 +20,4 @@ export const sendResponse = (response: ServerResponse, code: number, mes: Object
       response.end(JSON.stringify({ message: mes }));
     }
   }
-
-}
+};

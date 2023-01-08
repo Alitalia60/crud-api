@@ -1,9 +1,9 @@
 import { init } from '../config/init';
 import cluster, { Worker } from 'cluster';
 
-let { PORT, maxWorkers } = init();
+const { PORT, maxWorkers } = init();
 type WorkerSetType = { child: Worker, workerPort: number };
-let workersArray: WorkerSetType[] = [];
+const workersArray: WorkerSetType[] = [];
 
 export const createWorkers = () => {
   for (let index = 1; index <= maxWorkers; index++) {
@@ -12,7 +12,7 @@ export const createWorkers = () => {
     workersArray.push(set);
   }
   return workersArray;
-}
+};
 
 export const replaceDeadWorker = (worker: Worker) => {
   const freePort = workersArray.find(item => item.child === worker)?.workerPort;
@@ -21,13 +21,13 @@ export const replaceDeadWorker = (worker: Worker) => {
     const set: WorkerSetType = { child: newWorker, workerPort: freePort };
     workersArray.push(set);
   }
-}
+};
 
 export function nextWorker(): WorkerSetType | undefined {
   const firstWorker = workersArray.shift();
   if (firstWorker) {
-    workersArray.push(firstWorker)
-    return firstWorker
+    workersArray.push(firstWorker);
+    return firstWorker;
   }
-  else return
+  else return;
 }

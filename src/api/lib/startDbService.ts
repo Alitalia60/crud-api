@@ -1,5 +1,4 @@
 import { fork, ChildProcess } from 'child_process';
-import process from 'node:process';
 
 export async function startDBService(): Promise<ChildProcess> {
   return new Promise((resolve, reject) => {
@@ -10,10 +9,10 @@ export async function startDBService(): Promise<ChildProcess> {
       database.on('spawn', () => {
         console.log('Database connected. pid: ', database.pid);
       });
-      resolve(database)
+      resolve(database);
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-  })
+  });
 }
 

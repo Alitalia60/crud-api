@@ -5,10 +5,10 @@ import { router } from '../routes/router';
 import { balancer } from '../routes/balancer';
 
 
-export function runServer(port: number, multiMode: boolean = false, worker: Worker | undefined = undefined): void {
+export function runServer(port: number, multiMode = false, worker: Worker | undefined = undefined): void {
 
   if (worker) {
-    port = Number(process.env['workerPort'])
+    port = Number(process.env['workerPort']);
     const server: Server = createServer(router);
     server.listen(port, () => {
       console.log(`worker ${worker.id} start at ${port} pid: `, process.pid);

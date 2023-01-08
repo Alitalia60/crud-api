@@ -1,11 +1,9 @@
-import { ClientRequest, IncomingMessage, ServerResponse, request as httpRequest } from 'node:http'
+import { ClientRequest, IncomingMessage, ServerResponse, request as httpRequest } from 'node:http';
 
 import { getBodyData } from '../lib/getBodyData';
 import { sendResponse } from '../helpers/sendResponse';
 import { nextWorker } from '../lib/workersQueue';
 import { codesStatus } from '../helpers/codeStatuses';
-
-// let nextPort: number = 0;
 
 export async function balancer(request: IncomingMessage, response: ServerResponse) {
 
@@ -14,15 +12,15 @@ export async function balancer(request: IncomingMessage, response: ServerRespons
   const nextQueue = nextWorker();
   const nextPort = nextQueue?.workerPort;
 
-  let reqBody: string = '';
+  let reqBody = '';
   if (method) {
     if (['PUT', 'POST'].includes(method)) {
       reqBody = await getBodyData(request);
     }
-  };
+  }
 
   // перенаправление запроса к worker
-  let config = {
+  const config = {
     method: method,
     path: url,
     port: nextPort,
@@ -36,16 +34,20 @@ export async function balancer(request: IncomingMessage, response: ServerRespons
 
     if (config.method) {
       try {
-        let resBodyJSON: string = await getBodyData(workerResponse);
+        const resBodyJSON: string = await getBodyData(workerResponse);
         sendResponse(response, workerResponse.statusCode ? workerResponse.statusCode : codesStatus.ServerError, resBodyJSON ? JSON.parse(resBodyJSON) : '');
 
       } catch (error) {
         console.log(`LB response error :${error}`);
-        sendResponse(response, codesStatus.ServerError, error ? error : 'Unknon error');
+        if (typeof error === 'string') {
+          sendResponse(response, codesStatus.ServerError, error);
+        } else {
+          sendResponse(response, codesStatus.ServerError, 'Unknon error');
+        }
       }
     } else {
       sendResponse(response, codesStatus.ServerError, 'Method not valid');
     }
   });
-  requestLB.end(reqBody)
+  requestLB.end(reqBody);
 }

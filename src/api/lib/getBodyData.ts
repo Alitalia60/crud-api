@@ -6,10 +6,10 @@ export async function getBodyData(request: IncomingMessage): Promise<string> {
       let bodyData = '';
       request.on('data', data => {
         bodyData += data.toString();
-      })
-      request.on('end', () => resolve(bodyData))
+      });
+      request.on('end', () => resolve(bodyData));
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-  })
+  });
 } 

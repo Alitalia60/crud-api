@@ -6,6 +6,8 @@ import { TUser, TMessage, TResult, TError } from '../api/types/types';
 
 
 let users: TUser[] = [];
+
+// !! for testing purposes
 // let users: TUser[] = [
 //   {
 //     id: '9db530b3-726c-487f-be5d-c80bef62bd58',
@@ -126,36 +128,27 @@ process.on('message', (mes: TMessage) => {
     case 'GET':
       DBService.get(mes.userId)
         // DBService.get(mes.userId)
-        .then(result => { sendResult(mes.workerId, result) })
-        .catch(error => {
-          sendError(mes.workerId, error)
-        });
+        .then(result => sendResult(mes.workerId, result))
+        .catch(error => sendError(mes.workerId, error));
       break;
     case 'POST':
 
       DBService.add(mes.body)
         // DBService.get(mes.userId)
-        .then(result => { sendResult(mes.workerId, result) })
-        .catch(error => { sendError(mes.workerId, error) });
+        .then(result => sendResult(mes.workerId, result))
+        .catch(error => sendError(mes.workerId, error));
       break;
     case 'PUT':
       DBService.update(mes.userId, mes.body)
         // DBService.get(mes.userId)
-        .then(result => { sendResult(mes.workerId, result) })
-        .catch(error => { sendError(mes.workerId, error) });
+        .then(result => sendResult(mes.workerId, result))
+        .catch(error => sendError(mes.workerId, error));
       break;
     case 'DELETE':
       DBService.delete(mes.userId)
         // DBService.get(mes.userId)
-        .then(result => {
-          // console.log('case DELETE result: ', result);
-          sendResult(mes.workerId, result)
-        })
-        .catch(error => {
-
-          // console.log('case DELETE error: ', error);
-          sendError(mes.workerId, error)
-        });
+        .then(result => sendResult(mes.workerId, result))
+        .catch(error => sendError(mes.workerId, error));
       break;
 
     default:
