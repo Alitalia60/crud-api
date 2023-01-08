@@ -20,18 +20,11 @@ async function app() {
   if (!MULTI) {
     // single-mode
     DB = createFork();
-    // DB = getDB();
-    // DB = fork('src/database/DBservice.ts');
-
-
     runServer(PORT);
-
   }
+
   else {
-
     if (cluster.isPrimary) {
-
-      // DB = fork('src/database/DBservice.ts');
       DB = createFork();
 
       DB?.on('message', (mes: TAnswer) => {

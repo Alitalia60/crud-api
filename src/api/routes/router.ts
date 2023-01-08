@@ -50,9 +50,9 @@ export const router = async (req: IncomingMessage, res: ServerResponse) => {
     process.send({ workerId: cluster.worker?.id, cmd: req.method, userId: id, body: reqBodyJSON })
 
   } else {
-    // if router is in main process (single-mode)
-    // if (DB) {
-    DB?.on('message', (mes: TAnswer) => {
+    // if router is Primary process (single-mode) & DB - is child
+
+    DB?.once('message', (mes: TAnswer) => {
       const { workerId, code, data, errMessage } = mes;
       if (mes.data) {
         sendResponse(res, mes.code, mes.data)
@@ -66,10 +66,9 @@ export const router = async (req: IncomingMessage, res: ServerResponse) => {
     // }
   }
 
-
-
   // if router is worker
-  process.on('message', (mes: TAnswer) => {
+  process.removeAllListeners('message');
+  process.once('message', (mes: TAnswer) => {
     if (mes.data) {
       sendResponse(res, mes.code, mes.data)
     } else if (mes.errMessage) {
@@ -77,6 +76,5 @@ export const router = async (req: IncomingMessage, res: ServerResponse) => {
     } else {
       sendResponse(res, mes.code, '')
     }
-
   })
 }

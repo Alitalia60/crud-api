@@ -14,12 +14,11 @@ export function runServer(port: number, multiMode: boolean = false, worker: Work
       console.log(`worker ${worker.id} start at ${port} pid: `, process.pid);
     });
 
-
   }
   else {
     const server: Server = createServer(multiMode ? balancer : router);
     server.listen(port, () => {
-      console.log(`Server ${multiMode ? '(balancer) ' : ''}start at ${port} pid: `, process.pid);
+      console.log(`Server ${multiMode ? '(balancer) ' : ''}start at ${port}, pid: `, process.pid);
     });
 
   }

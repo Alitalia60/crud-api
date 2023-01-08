@@ -67,6 +67,7 @@ class DBService {
 
   // ******************************
   static async add(data: string): Promise<TResult> {
+
     return await new Promise((resolve, reject) => {
       try {
         const newUser: User = new User(data);

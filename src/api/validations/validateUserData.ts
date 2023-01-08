@@ -10,7 +10,7 @@ const correctUser: TUser = {
 
 export function validateUserData(usersData: string): string[] {
 
-  const userDataAsObject = JSON.parse(usersData);
+  const userDataAsObject: TUser = JSON.parse(usersData);
   const incorrectKeys: string[] = [];
   const missingKey: string[] = [];
 
@@ -25,8 +25,8 @@ export function validateUserData(usersData: string): string[] {
     incorrectKeys.push('"hobby" must be an array')
 
   } else {
-    if (userDataAsObject.hobby.length > 0) {
-      userDataAsObject.hobby.forEach((item: string) => {
+    if (userDataAsObject.hobbies.length > 0) {
+      userDataAsObject.hobbies.forEach((item: string) => {
         if (typeof item !== 'string') {
           incorrectKeys.push('Array "hobby" must contain items of string')
         }
