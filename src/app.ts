@@ -68,6 +68,7 @@ else {
 
 export function createFork() {
   const DBUrl = resolve(__dirname, 'database/DBservice');
+  // const DBUrl = resolve(__dirname, 'database/DBservice.js');
   const database = fork(DBUrl);
   database.on('spawn', () => console.log('Database connected. pid: ', database.pid));
   return database;
