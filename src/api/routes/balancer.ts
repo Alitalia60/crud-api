@@ -7,7 +7,7 @@ import { codesStatus } from '../helpers/codeStatuses';
 
 export async function balancer(request: IncomingMessage, response: ServerResponse) {
 
-  const { method, url, } = request;
+  const { method, url } = request;
 
   const nextQueue = nextWorker();
   const nextPort = nextQueue?.workerPort;

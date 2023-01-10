@@ -18,14 +18,7 @@
   "overrides": [
     {
       "files": ["src/**/*.ts"],
-      "extends": [
-        // "airbnb-base",
-        // "airbnb-typescript/base",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
-        // "prettier",
-        // "jest"
-      ],
+      "extends": ["plugin:@typescript-eslint/recommended"],
       "rules": {
         "comma-dangle": ["error", "only-multiline"],
         "@typescript-eslint/interface-name-prefix": "off",
@@ -36,8 +29,7 @@
         "indent": ["error", 2],
         "semi": ["error", "always"],
         "quotes": ["error", "single"],
-        "no-console": "off",
-        "max-len": ["warn", { "code": 120 }]
+        "no-console": "off"
       }
     }
   ]

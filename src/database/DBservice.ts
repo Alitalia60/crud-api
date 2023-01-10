@@ -125,34 +125,34 @@ class DBService {
 process.on('message', (mes: TMessage) => {
 
   switch (mes.cmd) {
-    case 'GET':
-      DBService.get(mes.userId)
-        // DBService.get(mes.userId)
-        .then(result => sendResult(mes.workerId, result))
-        .catch(error => sendError(mes.workerId, error));
-      break;
-    case 'POST':
+  case 'GET':
+    DBService.get(mes.userId)
+    // DBService.get(mes.userId)
+      .then(result => sendResult(mes.workerId, result))
+      .catch(error => sendError(mes.workerId, error));
+    break;
+  case 'POST':
 
-      DBService.add(mes.body)
-        // DBService.get(mes.userId)
-        .then(result => sendResult(mes.workerId, result))
-        .catch(error => sendError(mes.workerId, error));
-      break;
-    case 'PUT':
-      DBService.update(mes.userId, mes.body)
-        // DBService.get(mes.userId)
-        .then(result => sendResult(mes.workerId, result))
-        .catch(error => sendError(mes.workerId, error));
-      break;
-    case 'DELETE':
-      DBService.delete(mes.userId)
-        // DBService.get(mes.userId)
-        .then(result => sendResult(mes.workerId, result))
-        .catch(error => sendError(mes.workerId, error));
-      break;
+    DBService.add(mes.body)
+    // DBService.get(mes.userId)
+      .then(result => sendResult(mes.workerId, result))
+      .catch(error => sendError(mes.workerId, error));
+    break;
+  case 'PUT':
+    DBService.update(mes.userId, mes.body)
+    // DBService.get(mes.userId)
+      .then(result => sendResult(mes.workerId, result))
+      .catch(error => sendError(mes.workerId, error));
+    break;
+  case 'DELETE':
+    DBService.delete(mes.userId)
+    // DBService.get(mes.userId)
+      .then(result => sendResult(mes.workerId, result))
+      .catch(error => sendError(mes.workerId, error));
+    break;
 
-    default:
-      break;
+  default:
+    break;
   }
 });
 
