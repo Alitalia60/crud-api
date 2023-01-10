@@ -4,9 +4,10 @@
   "description": "implement simple CRUD API using in-memory database underneath.",
   "main": "dist/app.js",
   "scripts": {
-    "start:dev": "nodemon ./src/app.ts && tsc ./src/app.ts",
-    "start:prod": "tsc && node ./dist/app.js",
-    "start:multi": "tsc && node ./dist/app.js --multi"
+    "test": "jest",
+    "lint": "eslint",
+    "start:dev": "nodemon ./src/app.ts",
+    "start:multi": "nodemon ./src/app.ts --multi"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,6 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.20",
-    "ts-node": "^10.9.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -49,6 +49,7 @@
     "jest": "^29.3.1",
     "prettier": "2.8.2",
     "supertest": "^6.3.3",
-    "ts-jest": "^29.0.3"
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
   }
 }

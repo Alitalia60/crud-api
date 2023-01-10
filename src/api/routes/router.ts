@@ -30,9 +30,9 @@ export const router = async (req: IncomingMessage, res: ServerResponse) => {
     }
     if (['PUT', 'POST'].includes(req.method)) {
       reqBodyJSON = await getBodyData(req);
-      const incorrectKeys = validateUserData(reqBodyJSON);
+      const incorrectKeys: string[] = validateUserData(reqBodyJSON);
       if (incorrectKeys.length > 0) {
-        sendResponse(res, codesStatus.BadRequest, `Incorrect/missing users key: ${incorrectKeys}`);
+        sendResponse(res, codesStatus.BadRequest, `Incorrect/missing users key: ${incorrectKeys.toString()}`);
 
       }
     }

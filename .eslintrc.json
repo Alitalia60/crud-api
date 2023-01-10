@@ -1,18 +1,44 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  "overrides": [],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "ecmaFeatures": {
+      "globalReturn": false
+    },
+    "requireConfigFile": false
   },
-  "plugins": ["@typescript-eslint", "prettier"],
-  "rules": {
-    "quotes": ["error", "single"],
-    "semi": "error"
-  }
+  "ignorePatterns": ["./**/*.js"],
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.ts"],
+      "extends": [
+        // "airbnb-base",
+        // "airbnb-typescript/base",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        // "prettier",
+        // "jest"
+      ],
+      "rules": {
+        "comma-dangle": ["error", "only-multiline"],
+        "@typescript-eslint/interface-name-prefix": "off",
+        "@typescript-eslint/ban-ts-ignore": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-explicit-any": "error",
+        "indent": ["error", 2],
+        "semi": ["error", "always"],
+        "quotes": ["error", "single"],
+        "no-console": "off",
+        "max-len": ["warn", { "code": 120 }]
+      }
+    }
+  ]
 }
