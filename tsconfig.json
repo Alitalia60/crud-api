@@ -1,8 +1,11 @@
 {
-  "extends": "./node16.json",
   "exclude": ["node_modules", "./src/api/tests", "__*.*"],
   "include": ["./src"],
   "compilerOptions": {
+    "lib": ["es2021"],
+    "module": "Node16",
+    "target": "ES6",
+    "esModuleInterop": true,
     "watch": false,
     "rootDir": "./src" /* Specify the root folder within your source files. */,
     "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
