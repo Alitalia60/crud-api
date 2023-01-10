@@ -7,7 +7,8 @@
     "test": "jest",
     "lint": "eslint",
     "start:dev": "nodemon ./src/app.ts",
-    "start:multi": "nodemon ./src/app.ts --multi"
+    "start:multi": "nodemon ./src/app.ts --multi",
+    "start:prod": "webpack && node dist/bundle.js"
   },
   "repository": {
     "type": "git",
