@@ -17,7 +17,7 @@
   },
   "overrides": [
     {
-      "files": ["src/**/*.ts"],
+      "files": ["src/*.ts", "src/**/*.ts"],
       "extends": ["plugin:@typescript-eslint/recommended"],
       "rules": {
         "comma-dangle": ["error", "only-multiline"],

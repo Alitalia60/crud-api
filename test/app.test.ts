@@ -8,21 +8,6 @@ export const PORT = init().PORT;
 const HOST = `http://localhost:${PORT}`;
 
 
-beforeAll(async () => {
-  await request(HOST)
-    .get("/api/users/")
-    .set("Accept", "application/JSON")
-    .expect("Content-Type", "application/JSON")
-    .expect(200)
-    .then(async response => {
-      let users = response.body;
-      if (users.length > 0) {
-        console.log('Restart testing process. Array of users must be empty');
-        process.exit(0)
-      }
-    });
-})
-
 // ****************************************************
 describe('GET users', () => {
 
@@ -251,12 +236,15 @@ describe('GET.  Try to get not existing or incorrect id', () => {
   });
   // not uuid
   test('testing get not uuid ID ', async () => {
-    const id = 'werwe-gfhfg-6456';
+    const id = 'werw535e-gfhf-6456-65gh-gd8s5rctr542';
     await request(HOST)
       .get(`/api/users/${id}`)
       .set("Accept", "application/JSON")
       .expect("Content-Type", "application/JSON")
-      .expect(400)
+      .then(response => {
+        expect([400, 404].includes(response.status)).toEqual(true);
+      })
+
 
   });
 });

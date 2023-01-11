@@ -10,92 +10,73 @@ import { TAnswer } from '../../api/types/types';
 import { validateUserData } from '../validations/validateUserData';
 
 export const router = async (req: IncomingMessage, res: ServerResponse) => {
-
-  let isCorrectData = true;
-
-  if (!req.headers['content-type']?.toLowerCase().includes('json')) {
-    sendResponse(res, codesStatus.BadRequest, 'Bad request. JSON expected');
-    isCorrectData = false;
-    return;
-
-  }
-
+  let id = '';
   let reqBodyJSON = '';
-
-  const method = <string>req.method;
+  let isCorrectData = true;
   const url = <string>req.url;
-  const id = url.split('/')[3];
+  const method = <string>req.method;
 
-  if (url !== '/api/users' && !url.match(/\/api\/users\//gm)) {
-    sendResponse(res, codesStatus.NotFound, 'Path not found');
-    isCorrectData = false;
-    return;
-
-  } else if (!['GET', 'POST', 'PUT', 'DELETE'].includes(method)) {
-    sendResponse(res, codesStatus.NotAllowed, 'Method not allowed');
-    isCorrectData = false;
-    return;
-
-  } else if (id && id.length !== 36) {
-    sendResponse(res, codesStatus.NotFound, 'Path not found');
-    isCorrectData = false;
-    return;
-
-  } else if (method === 'POST' && id) {
-    sendResponse(res, codesStatus.BadRequest, 'Bad request. No id required');
-    isCorrectData = false;
-    return;
-
-  } else if (['PUT', 'DELETE', 'GET'].includes(method) && id) {
-    if (!validate(id)) {
-      sendResponse(res, codesStatus.BadRequest, 'User id is invalid (not uuid)');
+  if (method) {
+    if (url !== '/api/users' && !url.match(/\/api\/users\//gm)) {
+      sendResponse(res, codesStatus.NotFound, 'Path not found');
       isCorrectData = false;
       return;
     }
-  }
 
-  if (['POST', 'PUT'].includes(method)) {
+    if (url?.match(/\/api\/users\/?/gm)) {
+      id = url.split('/')[3];
+      if (['PUT', 'DELETE', 'GET'].includes(method) && id) {
+        if (id.length !== 36) {
+          sendResponse(res, codesStatus.NotFound, 'Path not found');
+          isCorrectData = false;
+          return;
 
-    try {
-      reqBodyJSON = await getBodyData(req);
+        } else if (!validate(id)) {
+          sendResponse(res, codesStatus.BadRequest, 'User id is invalid (not uuid)');
+          isCorrectData = false;
+          return;
+        }
+      }
+    }
+    if (['PUT', 'POST'].includes(method)) {
 
-      const incorrectKeys: string[] = validateUserData(reqBodyJSON);
-      if (incorrectKeys.length > 0) {
-        sendResponse(res, codesStatus.BadRequest, `Wrong/missing data: ${incorrectKeys.toString()}`);
+      if (method === 'POST' && id) {
+        sendResponse(res, codesStatus.BadRequest, 'Bad request. No id required');
         isCorrectData = false;
         return;
       }
-    } catch (error) {
-      sendResponse(res, codesStatus.BadRequest, 'Bad body data');
-      isCorrectData = false;
 
+      reqBodyJSON = await getBodyData(req);
+      try {
+        JSON.parse(reqBodyJSON);
+      } catch (error) {
+        sendResponse(res, codesStatus.BadRequest, `Wrong request data: ${error}`);
+        isCorrectData = false;
+        return;
+      }
+
+      const incorrectKeys: string[] = validateUserData(reqBodyJSON);
+      if (incorrectKeys.length > 0) {
+        sendResponse(res, codesStatus.BadRequest, `Incorrect/missing users key: ${incorrectKeys.toString()}`);
+        isCorrectData = false;
+        return;
+
+      }
     }
+  } else {
+    sendResponse(res, codesStatus.NotAllowed, 'Method not allowed');
+    isCorrectData = false;
+    return;
   }
 
-  if (isCorrectData) {
-    if (process.send) {
-      //отправка worker.id сообщения мастеру
-      process.send({ workerId: cluster.worker?.id, cmd: req.method, userId: id, body: reqBodyJSON });
-
-    } else {
-      // if router is Primary process (single-mode) & DB - is child
-      DB?.send({ workerId: '', cmd: req.method, userId: id, body: reqBodyJSON });
-
-      DB?.once('message', (mes: TAnswer) => {
-        if (mes.data) {
-          sendResponse(res, mes.code, mes.data);
-        } else if (mes.errMessage) {
-          sendResponse(res, mes.code, mes.errMessage);
-        } else {
-          sendResponse(res, mes.code, '');
-        }
-      });
+  if (process.send) {
+    //отправка worker.id сообщения мастеру
+    if (isCorrectData) {
+      process.send({ workerId: cluster.worker?.id, cmd: method, userId: id, body: reqBodyJSON });
     }
-
-    // if router is worker
-    process.removeAllListeners('message');
-
-    process.once('message', (mes: TAnswer) => {
+  } else {
+    // if router is Primary process (single-mode) & DB - is child
+    DB?.once('message', (mes: TAnswer) => {
       if (mes.data) {
         sendResponse(res, mes.code, mes.data);
       } else if (mes.errMessage) {
@@ -104,5 +85,19 @@ export const router = async (req: IncomingMessage, res: ServerResponse) => {
         sendResponse(res, mes.code, '');
       }
     });
+    DB?.send({ workerId: '', cmd: method, userId: id, body: reqBodyJSON });
   }
+
+  // if router is worker
+  process.removeAllListeners('message');
+
+  process.once('message', (mes: TAnswer) => {
+    if (mes.data) {
+      sendResponse(res, mes.code, mes.data);
+    } else if (mes.errMessage) {
+      sendResponse(res, mes.code, mes.errMessage);
+    } else {
+      sendResponse(res, mes.code, '');
+    }
+  });
 };
