@@ -1,12 +1,11 @@
-import { TUser } from '../src/api/types/types';
-
+import { init } from '../src/api/config/init';
 import request from 'supertest';
 import { beforeAll, describe, expect, test } from '@jest/globals';
 import { v4 as uuidv4 } from 'uuid';
 
 
-
-const HOST = 'http://localhost:4000';
+export const PORT = init().PORT;
+const HOST = `http://localhost:${PORT}`;
 
 
 beforeAll(async () => {
