@@ -8,7 +8,8 @@ import { fork, ChildProcess } from 'child_process';
 import { resolve } from 'path';
 
 export const PORT = init().PORT;
-export let MULTI = init().MULTI;
+
+export let MULTI = false;
 
 export let DB: ChildProcess | undefined = undefined;
 
@@ -65,10 +66,8 @@ else {
   }
 }
 
-
 export function createFork() {
   const DBUrl = resolve(__dirname, 'database/DBservice');
-  // const DBUrl = resolve(__dirname, 'database/DBservice.js');
   const database = fork(DBUrl);
   database.on('spawn', () => console.log('Database connected. pid: ', database.pid));
   return database;

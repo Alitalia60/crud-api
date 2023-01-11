@@ -12,7 +12,8 @@ export function validateUserData(usersData: string): string[] {
 
   const userDataAsObject: TUser = JSON.parse(usersData);
   const incorrectKeys: string[] = [];
-  const missingKey: string[] = [];
+  const missingKeys: string[] = [];
+  const requiredKeys: string[] = [];
 
   // validate if there are incorrect key(s)
   Object.keys(userDataAsObject).forEach(key => {
@@ -26,7 +27,7 @@ export function validateUserData(usersData: string): string[] {
     incorrectKeys.push('"hobby" must be an array');
 
   } else {
-    if (userDataAsObject.hobbies.length > 0) {
+    if (userDataAsObject.hobbies.length) {
       userDataAsObject.hobbies.forEach((item: string) => {
         if (typeof item !== 'string') {
           incorrectKeys.push('Array "hobby" must contain items of string');
@@ -35,18 +36,25 @@ export function validateUserData(usersData: string): string[] {
     }
   }
 
-  if (incorrectKeys.length > 0) {
+  if (incorrectKeys.length) {
     return incorrectKeys;
   }
+
   // validate if there are missing key(s)
   Object.keys(correctUser).forEach(key => {
     if (key !== 'id') {
       if (!(key in userDataAsObject)) {
-        missingKey.push(key);
+        missingKeys.push(key);
       }
     }
   });
-  return missingKey;
+  if (missingKeys.length) {
+    return missingKeys;
+  }
 
+  if (typeof userDataAsObject.age !== 'number') requiredKeys.push('age isn`t a number');
+  if (typeof userDataAsObject.username !== 'string') requiredKeys.push('username isn`t a string');
+  if (!userDataAsObject.username) requiredKeys.push('username is empty');
+  return requiredKeys;
 
 }

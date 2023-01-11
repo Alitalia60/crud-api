@@ -10,6 +10,10 @@ export async function balancer(request: IncomingMessage, response: ServerRespons
   const { method, url } = request;
 
   const nextQueue = nextWorker();
+
+  // !! DEBUG purpose : check if next port used
+  // console.log(`Workers port: ${nextQueue?.workerPort} used`);
+
   const nextPort = nextQueue?.workerPort;
 
   let reqBody = '';

@@ -5,9 +5,8 @@ dotenvConfig();
 
 export function init() {
   const HOST: string = process.env.HOST || 'localhost';
-  const PORT: number = Number(process.env.PORT) || 4000;
-  const MULTI: boolean = process.env.MULTI_MODE === 'true' ? true : false;
+  const PORT: number = Number(process.env.PORT) || 3200;
   const maxWorkers = cpus().length;
-  return { HOST, PORT, MULTI, maxWorkers };
+  return { HOST, PORT, maxWorkers };
 
 }
