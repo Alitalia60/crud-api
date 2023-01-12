@@ -1,5 +1,5 @@
 {
-  "exclude": ["node_modules", "./src/api/tests", "__*.*"],
+  "exclude": ["node_modules", "./test", "__*.*"],
   "include": ["./src"],
   "compilerOptions": {
     "lib": ["es2021"],

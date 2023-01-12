@@ -2,7 +2,11 @@ Contact me, if you want, by discord: https://discordapp.com/users/@Alitalia22#52
 
 # CRUD-API
 
-## Usage:
+## Prepare:
+
+after cloning git repository
+
+    `git clone https://github.com/Alitalia60/crud-api.git`
 
 ---
 
@@ -12,21 +16,19 @@ Contact me, if you want, by discord: https://discordapp.com/users/@Alitalia22#52
 
 ### 2. Create file `.env` such as `.example.env`, or rename `.example.env` to `.env`
 
+---
+
 ### 3. Launch the application in one of the ways
 
 ### At development mode:
 
-if you want to run application as sinle server, in `.env` set key
-
-`MULTI_MODE=false`.
-
-Otherwise, if application runs as cluster
-
-`MULTI_MODE=true`
-
-and start
+single-server mode start
 
     `npm run start:dev`
+
+cluster server mode
+
+    `npm run start:multi`
 
 ### In production mode
 
@@ -36,14 +38,30 @@ if single server mode
 
 cluster server mode
 
-    `npm run start:multi`
+    `npm run start:prod -- --multi`
 
-### 5. Testing:
+---
 
-While testing, firstly, run in terminal:
+### 4. Testing:
 
-    `npm run test:dev`
+While testing, firstly, run in server in terminal:
 
 and then, in _**other**_ terminal, run test:
 
     `npx jest`
+
+---
+
+### 5. APP USAGE
+
+### API
+
+- GET /api/users - get all users (remove password from response)
+
+- GET /api/users/:userId - get the user by id (ex. /api/users/123-dfs-er4tr) (remove password from response)
+
+- POST /api/users - create user
+
+- PUT /api/users/:userId - update user
+
+- DELETE /api/users/:userId - delete user

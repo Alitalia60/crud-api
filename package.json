@@ -21,9 +21,6 @@
   ],
   "author": "Andrew Litvinov",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Alitalia60/RSSchool-node.js-2022Q4/issues"
-  },
   "homepage": "https://github.com/Alitalia60/RSSchool-node.js-2022Q4#readme",
   "dependencies": {
     "dotenv": "^16.0.3",
