@@ -13,6 +13,8 @@ after cloning git repository
 ### 1. In terminal run
 
     `npm install`
+    
+    `npm install typescript`
 
 ### 2. Create file `.env` such as `.example.env`, or rename `.example.env` to `.env`
 
