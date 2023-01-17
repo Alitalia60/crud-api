@@ -48,7 +48,13 @@ While testing, firstly, run in server in terminal:
 
 and then, in _**other**_ terminal, run test:
 
-    `npx jest`
+    `npx jest` or `npm run test`
+
+> NOTE
+>
+>  for watching round-robin method in cluster - remove comment's slashes in module `balancer.ts`, line 15
+
+then restart task in dev mode
 
 ---
 
