@@ -1,7 +1,7 @@
 Contact me, if you want, by discord: https://discordapp.com/users/@Alitalia22#5200/
 
 # CRUD-API
-
+https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/crud-api/assignment.md
 ## Prepare:
 
 after cloning git repository
