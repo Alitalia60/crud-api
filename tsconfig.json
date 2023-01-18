@@ -1,0 +1,18 @@
+{
+  "exclude": ["node_modules", "./test", "__*.*"],
+  "include": ["./src"],
+  "compilerOptions": {
+    "lib": ["es2021"],
+    "module": "Node16",
+    "target": "ES6",
+    "esModuleInterop": true,
+    "watch": false,
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
+    "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "baseUrl": "./src" /* Specify the base directory to resolve non-relative module names. */,
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "removeComments": true /* Disable emitting comments. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  }
+}
